@@ -7,7 +7,19 @@ dotenv.config({
   path: "./env",
 });
 
-connectDB();
+connectDB().then(() => {
+  app.on("error", (error) => {
+    console.error("ERR: ", error);
+    throw error;
+  });
+  app
+    .listen(process.env.PORT, () => {
+      console.log(`App listening on port ${process.env.PORT}`);
+    })
+    .catch((err) => {
+      console.error("MONGODB connection failed !!!", err);
+    });
+});
 
 /*
 // Connecting with database in index.js file
